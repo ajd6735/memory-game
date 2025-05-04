@@ -1,16 +1,11 @@
 const colors = ['red', 'blue', 'green', 'purple', 'orange', 'pink', 'red', 'blue', 'green', 'purple', 'orange', 'pink'];
-
 let cards = shuffle(colors.concat(colors));
-
 let selectedCards = [];
-
 let score = 0;
-
-let timeLeft = 30;
-
+let timeLeft = 60;
 let gameInterval;
 
-const startBtn = document.getElementById('startbtn');
+const startbtn = document.getElementById('startbtn');
 const gameContainer = document.getElementById('game-container');
 const scoreElement = document.getElementById('score');
 const timerElement = document.getElementById('timer');
@@ -26,7 +21,7 @@ function generateCards() {
 }
 
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--){
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
@@ -56,7 +51,6 @@ function checkMatch() {
     } else {
         card1.textContent = '?';
         card2.textContent = '?';
-
         card1.style.backgroundColor = '#ddd';
         card2.style.backgroundColor = '#ddd';
     }
@@ -64,9 +58,9 @@ function checkMatch() {
 }
 
 function startGame() {
-    let timeLeft = 30;
-    startBtn.disabled = true;
-    score = 0;
+    let timeLeft = 60;
+    startbtn.disabled = true;
+    score = 0; // Reset score to zero
     scoreElement.textContent = `Score: ${score}`;
     startGameTimer(timeLeft);
     cards = shuffle(colors.concat(colors));
@@ -75,3 +69,20 @@ function startGame() {
     generateCards();
     gameContainer.addEventListener('click', handleCardClick);
 }
+
+function startGameTimer(timeLeft) {
+    timerElement.textContent = `Time Left: ${timeLeft}`;
+    gameInterval = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Time Left: ${timeLeft}`;
+
+        if (timeLeft === 0) {
+            clearInterval(gameInterval);
+            let timeLeft = 60;
+            alert('Game Over!');
+            startbtn.disabled = false;
+        }
+    }, 1000);
+}
+
+startbtn.addEventListener('click', startGame);
