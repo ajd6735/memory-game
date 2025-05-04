@@ -45,3 +45,33 @@ function handleCardClick(event) {
         setTimeout(checkMatch, 500);
     }
 }
+
+function checkMatch() {
+    const [card1, card2] = selectedCards;
+    if (card1.dataset.color === card2.dataset.color) {
+        card1.classList.add('matched');
+        card2.classList.add('matched');
+        score += 2;
+        scoreElement.textContent = `Score: ${score}`;
+    } else {
+        card1.textContent = '?';
+        card2.textContent = '?';
+
+        card1.style.backgroundColor = '#ddd';
+        card2.style.backgroundColor = '#ddd';
+    }
+    selectedCards = [];
+}
+
+function startGame() {
+    let timeLeft = 30;
+    startBtn.disabled = true;
+    score = 0;
+    scoreElement.textContent = `Score: ${score}`;
+    startGameTimer(timeLeft);
+    cards = shuffle(colors.concat(colors));
+    selectedCards = [];
+    gameContainer.innerHTML = '';
+    generateCards();
+    gameContainer.addEventListener('click', handleCardClick);
+}
